@@ -1,0 +1,11 @@
+State,description,on entry,on exit,onExit,onTimeout,onCharge,onChargeEnd,onButton,onWifiConnect,onWifiDisconnect,onDive,onSurface
+modeWake,what happens when the button is pressed,"initialize systems, start timer, display splash screen",,,modeSleep,modeChg,,modeSurf,,,,
+modeSleep,"sleep mode- in low power mode, wakes on button press","put all systems to sleep, go to sleep",,modeWake,,,,,,,,
+modeChg,battery is charging.  not in wifi mode,display splash screen +wifi icon,,,,,modeSleep,modeAP,,,,
+modeSurf,"surface mode- display compass, depth",display stuff,,,modeSleep,modeAP,,,,,modeStartDive,
+modeStartDive,"start dive- open dive log, start logging",display stuff,,modeDiveA,,,,,,,,modeFinishDive
+modeDiveA,display screen A,,,,,,,modeDiveB,,,,modeFinishDive
+modeDiveB,display screen B,,,,,,,modeDiveA,,,,
+modeFinishDive,close dive log,display something about dive ending,,modeSurf,,,,,,,,
+modeAP,wifiwifiwifi,,,,modeChg,,,,modeServer,,,
+modeServer,,,,,modeChg,,,,,modeAP,,

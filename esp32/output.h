@@ -17,8 +17,8 @@ typedef enum
 {
 onExit = 0,
 onTimeout = 1,
-onCharge = 2,
-onChargeEnd = 3,
+onExtpowConn = 2,
+onExtpowDC = 3,
 onButton = 4,
 onWifiConnect = 5,
 onWifiDisconnect = 6,
@@ -30,14 +30,14 @@ state_t stateTable [10][9] =
 {
 {modeWake,modeSleep,modeChg,modeWake,modeSurf,modeWake,modeWake,modeWake,modeWake,},
 {modeWake,modeSleep,modeSleep,modeSleep,modeSleep,modeSleep,modeSleep,modeSleep,modeSleep,},
-{modeChg,modeChg,modeChg,modeSleep,modeAP,modeChg,modeChg,modeChg,modeChg,},
+{modeChg,modeSleep,modeChg,modeSleep,modeAP,modeChg,modeChg,modeChg,modeChg,},
 {modeSurf,modeSleep,modeAP,modeSurf,modeSurf,modeSurf,modeSurf,modeStartDive,modeSurf,},
-{modeDiveA,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeFinishDive,},
+{modeDiveA,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,modeStartDive,},
 {modeDiveA,modeDiveA,modeDiveA,modeDiveA,modeDiveB,modeDiveA,modeDiveA,modeDiveA,modeFinishDive,},
-{modeDiveB,modeDiveB,modeDiveB,modeDiveB,modeDiveA,modeDiveB,modeDiveB,modeDiveB,modeDiveB,},
+{modeDiveB,modeDiveB,modeDiveB,modeDiveB,modeDiveA,modeDiveB,modeDiveB,modeDiveB,modeFinishDive,},
 {modeSurf,modeFinishDive,modeFinishDive,modeFinishDive,modeFinishDive,modeFinishDive,modeFinishDive,modeFinishDive,modeFinishDive,},
-{modeAP,modeChg,modeAP,modeAP,modeAP,modeServer,modeAP,modeAP,modeAP,},
-{modeServer,modeChg,modeServer,modeServer,modeServer,modeServer,modeAP,modeServer,modeServer,},
+{modeAP,modeChg,modeAP,modeSleep,modeAP,modeServer,modeAP,modeAP,modeAP,},
+{modeServer,modeAP,modeServer,modeSleep,modeServer,modeServer,modeAP,modeServer,modeServer,},
 };
 
 state_t currentState = modeWake;

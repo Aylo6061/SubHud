@@ -13,8 +13,6 @@ screen::screen()
 }
 
 void screen::begin(){
-	pinMode(A1, OUTPUT);
-	digitalWrite(A1, HIGH);
 	pinMode(A2, OUTPUT);
 	digitalWrite(A2, HIGH);
 	log_v("starting screen");
@@ -64,4 +62,38 @@ void screen::display_dive_mode(int heading, float depthFeet, bool isCal)
 	oled->println(depthFeet);
 	oled->display();
 }
-// void powerDown();
+
+void screen::display_ep_mode(bool charging, int ap)
+{
+	log_v("screen: extpow");
+	oled->clearDisplay();
+	oled->setCursor(52,24);
+	oled->print("EXTPOW");
+	oled->setCursor(16,4);
+	if(charging){
+	oled->print("chg");
+	}
+	else{
+	oled->print("done");
+	}
+
+	oled->setCursor(16,14);
+	if(ap==1)
+	{
+	oled->print("AP ON");
+	}
+	if(ap==2)
+	{
+	oled->print("CONN");	
+	}
+	
+	oled->display();
+}
+
+
+void screen::powerDown()
+{
+	oled->ssd1306_command(SSD1306_DISPLAYOFF);
+	pinMode(A2, OUTPUT);
+	digitalWrite(A2, LOW);
+}

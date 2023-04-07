@@ -4,6 +4,8 @@
 #include "src/basicTimer.h"
 #include "src/button.h"
 #include "src/storage.h"
+#include "src/battery.h"
+#include "src/connectivity.h"
 
 screen oled;
 measure measSys;
@@ -19,11 +21,13 @@ void setup() {
   timer.init();
   initButton();
   initLog();
+  initBattery();
 }
 
 int heading;
 float depth;
 bool cal;
+int vbatt;
 
 void loop() {
 
@@ -31,6 +35,9 @@ void loop() {
 switch (currentState){
   case modeSleep:
     //if the case is sleep and we are not asleep...we should go to sleep
+    oled.powerDown();
+    measSys.powerDown();
+    stopServer();
     enterSleep();
     break;
   case modeWake:
@@ -87,6 +94,28 @@ switch (currentState){
     }
     stateMachineUpdate(onExit);
     break;
+
+    case modeChg:
+    if(newState()){
+      timer.stop();
+      timer.start(60000);
+      stopServer();
+    }
+    oled.display_ep_mode(isCharging(),0);
+    break;
+
+    case modeAP:
+    if(newState()){
+      timer.stop();
+      timer.start(60000);
+      startServer();
+    }
+    oled.display_ep_mode(isCharging(),1);
+    break;
+
+    case modeServer:
+    oled.display_ep_mode(isCharging(),2);
+    break;
     
   default:
     log_e("fell through state switch");
@@ -112,8 +141,24 @@ if(depth>.5 && currentState == modeSurf){
 if(depth<.1 && currentState == modeDiveA){
   stateMachineUpdate(onSurface);
 }
+if(extPow())
+{
+  stateMachineUpdate(onExtpowConn);
+}
+if(!extPow() && (currentState == modeChg || currentState == modeAP || currentState == modeServer))
+{
+  stateMachineUpdate(onExtpowDC);
+}
+if(currentState == modeAP && hasConnection()){
+  stateMachineUpdate(onWifiConnect);
+}
+if(currentState == modeServer && !hasConnection()){
+  stateMachineUpdate(onWifiDisconnect);
+}
 
-Serial.print(currentState);
+if(!extPow()){
+vbatt = measBatt();
+Serial.println(vbatt);
+}
 
-delay(30);
 }

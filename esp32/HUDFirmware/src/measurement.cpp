@@ -101,3 +101,8 @@ void measure::measurementTask()
 		}
 	}
 }
+
+void measure::powerDown()
+{
+	orient->enterSuspendMode();
+}

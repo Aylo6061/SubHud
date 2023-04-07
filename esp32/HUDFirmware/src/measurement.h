@@ -12,7 +12,7 @@ class measure{
 		void stopMeasurementTask();//stops the measurement task
 		void startMeasurementTask();
 		void measurementTask(); //measurement task will take a new measurement if it is time
-		// void powerDown();
+		void powerDown();
 		Adafruit_BNO055* orient;
 		MS5837* depth;
 		int lastHeading;
